@@ -1,9 +1,12 @@
-// Level 1
+// Level 2
 
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
- * Echo user input
+ * Confirm user input
+ * Return list of stored items when input == "list"
  * Exit when user input == "bye"
  */
 public class ScriptKiddie {
@@ -12,6 +15,7 @@ public class ScriptKiddie {
         String botName = "ScriptKiddie";
         Scanner userInput = new Scanner(System.in);
         String currUserInput = "";
+        List<String> storedList = new ArrayList<>();
 
         System.out.printf("%s\n", line);
         System.out.printf("Hello! I'm %s\n", botName);
@@ -21,8 +25,15 @@ public class ScriptKiddie {
         do {
             currUserInput = userInput.nextLine();
             System.out.printf("%s\n", line);
-            if (!currUserInput.equals("bye")) {
-                System.out.printf("%s\n", currUserInput);
+            if (currUserInput.equals("list")) {
+                for (int i = 0; i < storedList.size(); i++) {
+                    String item = storedList.get(i);
+                    System.out.printf("%d. %s\n", i + 1, item);
+                }
+                System.out.printf("%s\n", line);
+            } else if (!currUserInput.equals("bye")) {
+                storedList.add(currUserInput);
+                System.out.printf("added: %s\n", currUserInput);
                 System.out.printf("%s\n", line);
             }
         } while (!currUserInput.equals("bye"));
