@@ -1,6 +1,6 @@
 package ScriptKiddie;
 
-// Level 3
+// Level 5
 
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -80,20 +80,21 @@ public class ScriptKiddie {
                 System.out.printf("%s\n", line);
 
             } else {
-                Task newTask = parseTask(currUserInput);
 
                 System.out.printf("%s\n", line);
 
-                if (newTask == null) {
-                    System.out.println("Invalid input!");
-                } else {
+                try {
+                    Task newTask = parseTask(currUserInput);
                     taskList.add(newTask);
                     System.out.println("Got it. I've added this task:");
                     System.out.printf(" %s\n", newTask.toString());
                     System.out.printf("Now you have %d tasks in the list.\n", taskList.size());
+                } catch (SKException e) {
+                    System.out.println(e.getMessage());
                 }
 
                 System.out.printf("%s\n", line);
+
             }
 
         }
@@ -104,24 +105,36 @@ public class ScriptKiddie {
 
     }
 
-    public static Task parseTask(String input) {
+    public static Task parseTask(String input) throws SKException {
 
         String[] parts = input.split(" ", 2);
         String command = parts[0].toLowerCase();
         String restOfInput = parts.length > 1 ? parts[1] : "";
 
         if ("todo".equals(command)) {
+            if (restOfInput.isEmpty()) {
+                throw new SKException("Oh no! Content cannot be empty");
+            }
             return new ToDo(restOfInput);
         } else if ("deadline".equals(command)) {
             String[] deadlineParts = restOfInput.split(" /by ", 2);
+            if (deadlineParts.length < 2 || deadlineParts[1].trim().isEmpty()) {
+                throw new SKException("Oh no! Deadline must include a '/by' date");
+            }
             return new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim());
         } else if ("event".equals(command)) {
             String[] eventParts = restOfInput.split( " /from ", 2);
+            if (eventParts.length < 2 || eventParts[1].trim().isEmpty()) {
+                throw new SKException("Oh no! Event must include a '/from' date");
+            }
             String content = eventParts[0].trim();
             String[] timeParts = eventParts[1].split(" /to ", 2);
+            if (timeParts.length < 2 || timeParts[1].trim().isEmpty()) {
+                throw new SKException("Oh no! Event must include a '/to' date");
+            }
             return new Event(content, timeParts[0].trim(), timeParts[1].trim());
         } else {
-            return null;
+            throw new SKException("Sorry! I do not recognise that command.");
         }
 
     }
