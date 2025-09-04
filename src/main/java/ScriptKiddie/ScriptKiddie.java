@@ -1,6 +1,6 @@
 package ScriptKiddie;
 
-// Level 5
+// Level 6
 
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -11,6 +11,7 @@ import java.util.List;
  * Mark stored task when input is "mark"
  * Unmark stored task when input is "unmark"
  * Return list of stored items when input is "list"
+ * Delete task at index i when input is "delete i"
  * Exit when user input is "bye"
  */
 public class ScriptKiddie {
@@ -45,6 +46,32 @@ public class ScriptKiddie {
                 }
 
                 System.out.printf("%s\n", line);
+            } else if (currUserInput.substring(0, Math.min(6, currUserInput.length())).equals("delete")) {
+
+                System.out.printf("%s\n", line);
+
+                String[] tempArray = currUserInput.split(" ");
+                if (tempArray.length != 2) {
+                    System.out.println("Invalid input!");
+                    continue;
+                }
+                try {
+                    int taskNum = Integer.parseInt(tempArray[1]) - 1;
+                    if (taskNum >= taskList.size()) {
+                        System.out.println("Invalid task number!");
+                    } else {
+                        Task temp = taskList.get(taskNum);
+                        taskList.remove(taskNum);
+                        System.out.println("Noted. I've removed this task:");
+                        System.out.printf(" %s\n", temp.toString());
+                        System.out.printf("Now you have %d tasks in the list.\n", taskList.size());
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid task number!");
+                }
+
+                System.out.printf("%s\n", line);
+
             } else if (currUserInput.substring(0, Math.min(4, currUserInput.length())).equals("mark")) {
 
                 System.out.printf("%s\n", line);
