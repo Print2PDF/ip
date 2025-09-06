@@ -1,4 +1,4 @@
-package ScriptKiddie;
+package PrintBot;
 
 // Level-3
 
@@ -18,6 +18,15 @@ public class Task {
     public Task(String content) {
         this.isMarked = false;
         this.content = content;
+    }
+
+    /*
+     * Constructor
+     * Store content and mark status
+     */
+    public Task(String content, boolean isMarked) {
+        this.content = content;
+        this.isMarked = isMarked;
     }
 
     /*
@@ -56,6 +65,17 @@ public class Task {
         String markStatus = this.isMarked ? "X" : " ";
         return String.format("[%s] %s", markStatus, this.content);
         // example: "[X] return book"
+    }
+
+    /*
+     * @parameters
+     * none
+     *
+     * @description
+     * return string of task for save
+     */
+    public String saveFormat() {
+        return "task"; // stub
     }
 
 }
