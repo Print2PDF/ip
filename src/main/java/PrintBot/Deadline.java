@@ -7,7 +7,13 @@ package PrintBot;
  */
 public class Deadline extends Task {
 
-    private final String dueDate;
+    private String dueDate;
+
+    public Deadline(String content) {
+        super(content.split("/by ", 2)[0]);
+        String[] parts = content.split("/by ", 2);
+        this.dueDate = parts[1];
+    }
 
     public Deadline(String content, String dueDate) {
         super(content);
@@ -32,9 +38,8 @@ public class Deadline extends Task {
     }
 
     @Override
-    public String saveFormat() {
-        String markStatus = this.isItMarked() ? "X" : "O";
-        return "D," + this.getContent() + "," + markStatus + "," + this.dueDate;
+    public String writeSave() {
+        return "D" + "|" + (this.isItMarked() ? "1" : "0") + "|" + this.getContent() + "|" + this.dueDate;
     }
 
 }

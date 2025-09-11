@@ -104,11 +104,19 @@ public class TaskList {
      * return string of task list for save
      */
     public String saveFormat() {
-        String save = "";
-        for (Task currTask : this.storage) {
-            save += "/" + currTask.saveFormat();
-        }
-        return save;
+        return "";
+        // stub
+    }
+
+    /*
+     * @parameters
+     * none
+     *
+     * @description
+     * return this.storage.size()
+     */
+    public int getTaskListSize() {
+        return this.storage.size();
     }
 
 }

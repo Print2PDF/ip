@@ -28,9 +28,8 @@ public class ToDo extends Task {
     }
 
     @Override
-    public String saveFormat() {
-        String markStatus = this.isItMarked() ? "X" : "O";
-        return "T," + this.getContent() + "," + markStatus;
+    public String writeSave() {
+        return "T" + "|" + (this.isItMarked() ? "1" : "0") + "|" + this.getContent();
     }
 
 }

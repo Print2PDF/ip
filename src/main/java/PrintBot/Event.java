@@ -7,8 +7,16 @@ package PrintBot;
  */
 public class Event extends Task {
 
-    private final String startDate;
-    private final String endDate;
+    private String startDate;
+    private String endDate;
+
+    public Event(String content) {
+        super(content.split("/from ", 2)[0]);
+        String[] parts = content.split("/from ", 2);
+        parts = parts[1].split("/to ", 2);
+        this.startDate = parts[0];
+        this.endDate = parts[1];
+    }
 
     public Event(String content, String startDate, String endDate) {
         super(content);
@@ -34,9 +42,8 @@ public class Event extends Task {
     }
 
     @Override
-    public String saveFormat() {
-        String markStatus = this.isItMarked() ? "X" : "O";
-        return "E," + this.getContent() + "," + markStatus + "," + this.startDate + "," + this.endDate;
+    public String writeSave() {
+        return "E" + "|" + (this.isItMarked() ? "1" : "0") + "|" + this.getContent() + "|" + this.startDate + "|" + this.endDate;
     }
 
 }

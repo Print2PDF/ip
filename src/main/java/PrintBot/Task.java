@@ -21,15 +21,6 @@ public class Task {
     }
 
     /*
-     * Constructor
-     * Store content and mark status
-     */
-    public Task(String content, boolean isMarked) {
-        this.content = content;
-        this.isMarked = isMarked;
-    }
-
-    /*
      * Getter
      * Return stored content
      */
@@ -74,8 +65,41 @@ public class Task {
      * @description
      * return string of task for save
      */
-    public String saveFormat() {
+    public String writeSave() {
         return "task"; // stub
+    }
+
+    public static Task readSave(String data) throws CorruptedSaveException {
+        String[] parts = data.split("\\|");
+        String taskType = parts[0].trim();
+        boolean itIsMarked = parts[1].trim().equals("1");
+
+        Task task;
+
+        try {
+            switch (taskType) {
+                case "T":
+                    task = new ToDo(parts[2].trim());
+                    break;
+                case "D":
+                    task = new Deadline(parts[2].trim(), parts[3].trim());
+                    break;
+                case "E":
+                    task = new Event(parts[2].trim(), parts[3].trim(), parts[4].trim());
+                    break;
+                default:
+                    throw new CorruptedSaveException();
+            }
+        } catch (Exception e) {
+            throw new CorruptedSaveException();
+        }
+
+        if (itIsMarked) {
+            task.mark();
+        }
+
+        return task;
+
     }
 
 }
