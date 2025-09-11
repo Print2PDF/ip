@@ -1,7 +1,5 @@
 package PrintBot;
 
-// Level-3
-
 /*
  * Contain mark status and content of task
  */
