@@ -1,7 +1,58 @@
-Hello from
- ____        _        
-|  _ \ _   _| | _____ 
-| | | | | | | |/ / _ \
-| |_| | |_| |   <  __/
-|____/ \__,_|_|\_\___|
+___________________________________
+Loading save file...
+___________________________________
+___________________________________
+Hello! I'm PrintBot.
+What can I do for you?
+___________________________________
+todo borrow book
+___________________________________
+Got it. I've added this task:
+ [T] [ ] todo borrow book
+Now you have 1 tasks in the list.
+___________________________________
+event read book /from 2pm to /to 4pm
+___________________________________
+Got it. I've added this task:
+ [E] [ ] event read book  (from: 2025-09-12T00:00 to: 2025-09-12T00:00)
+Now you have 2 tasks in the list.
+___________________________________
+deadline return book /by 5pm
+___________________________________
+Got it. I've added this task:
+ [D] [ ] deadline return book  (by: Sep 12 2025)
+Now you have 3 tasks in the list.
+___________________________________
+mark 1
+___________________________________
+Nice, I've marked this task as done:
+ [T] [X] todo borrow book
+___________________________________
+hello
+___________________________________
+INVALID COMMAND
+___________________________________
+list
+___________________________________
+Here are the tasks in your list:
+1. [T] [X] todo borrow book
+2. [E] [ ] event read book  (from: 2025-09-12T00:00 to: 2025-09-12T00:00)
+3. [D] [ ] deadline return book  (by: Sep 12 2025)
+___________________________________
+delete 1
+___________________________________
+Noted. I've removed this task:
+ [T] [X] todo borrow book
+Now you have 2 tasks in the list.
+___________________________________
+list
+___________________________________
+Here are the tasks in your list:
+1. [E] [ ] event read book  (from: 2025-09-12T00:00 to: 2025-09-12T00:00)
+2. [D] [ ] deadline return book  (by: Sep 12 2025)
+___________________________________
+bye
+___________________________________
+Bye. Hope to see you again soon!
 
+___________________________________

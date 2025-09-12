@@ -1,2 +1,2 @@
-T|0|todo read book
-D|0|deadline return book|2025-09-12T00:00
+E|0|event read book |2025-09-12T00:00|2025-09-12T00:00
+D|0|deadline return book |2025-09-12T00:00
