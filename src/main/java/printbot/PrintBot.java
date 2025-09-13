@@ -1,8 +1,12 @@
-package PrintBot;
+package printbot;
 
 // A-MOREOOP
 
 //import java.io.*;
+import printbot.parser.Parser;
+import printbot.storage.Storage;
+import printbot.tasks.TaskList;
+
 import java.util.*;
 
 public class PrintBot {

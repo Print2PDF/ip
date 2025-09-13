@@ -1,4 +1,8 @@
-package PrintBot;
+package printbot.parser;
+
+import printbot.exceptions.PrintException;
+import printbot.tasks.*;
+import printbot.ui.UI;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
@@ -42,7 +46,7 @@ public class Parser {
         }
     }
 
-    // COMMANDS
+    // these methods process inputs for Command objects
     private static void botGreet() {
         ui.uiGreetUser();
     }

@@ -1,11 +1,14 @@
-package PrintBot;
+package printbot.ui;
 
 // A-MOREOOP
+
+import printbot.tasks.Task;
+import printbot.tasks.TaskList;
 
 public class UI {
 
     private static final String LINE = "___________________________________";
-    private static final String BOT_NAME = "PrintBot";
+    private static final String BOT_NAME = "printbot";
 
     public UI() {}
 

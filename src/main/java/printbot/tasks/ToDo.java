@@ -1,4 +1,4 @@
-package PrintBot;
+package printbot.tasks;
 
 /*
  * Store task name

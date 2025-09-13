@@ -2,7 +2,7 @@ ___________________________________
 Loading save file...
 ___________________________________
 ___________________________________
-Hello! I'm PrintBot.
+Hello! I'm printbot.
 What can I do for you?
 ___________________________________
 todo borrow book

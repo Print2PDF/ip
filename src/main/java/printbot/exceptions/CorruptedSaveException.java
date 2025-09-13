@@ -1,4 +1,4 @@
-package PrintBot;
+package printbot.exceptions;
 
 // Level-7
 

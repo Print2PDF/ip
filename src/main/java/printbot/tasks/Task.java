@@ -1,4 +1,6 @@
-package PrintBot;
+package printbot.tasks;
+
+import printbot.exceptions.CorruptedSaveException;
 
 /*
  * Contain mark status and content of task

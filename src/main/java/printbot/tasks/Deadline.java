@@ -1,4 +1,6 @@
-package PrintBot;
+package printbot.tasks;
+
+// NEW
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -6,29 +8,28 @@ import java.time.format.DateTimeFormatter;
 
 /*
  * Store task name
- * Store start date and end date (duration of event)
- * Indicator is [E]
+ * Store end date (deadline)
+ * Indicator is [D]
  */
-public class Event extends Task {
+public class Deadline extends Task {
 
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private LocalDateTime dueDate;
     private boolean hasTime;
 
-    public Event(String content) {
-        super(content.split("/from ", 2)[0]);
-        String[] parts = content.split("/from ", 2);
-        parts = parts[1].split("/to ", 2);
-        this.start = parseDateTime(parts[0]);
-        this.end = parseDateTime(parts[1]);
+    public Deadline(String content) {
+        super(content.split("/by ", 2)[0]);
+        String[] parts = content.split("/by ", 2);
+        //this.dueDate = parts[1];
+        this.dueDate = parseDateTime(parts[1]);
     }
 
-    public Event(String content, String from, String to) {
+    public Deadline(String content, String dueDate) {
         super(content);
-        this.start = parseDateTime(from);
-        this.end = parseDateTime(to);
+        //this.dueDate = dueDate;
+        this.dueDate = parseDateTime(dueDate);
     }
 
+    // LEVEL-8: parse datetime
     private LocalDateTime parseDateTime(String dateTimeString){
         try {
             // Format: d/M/yyyy HHmm (e.g., 2/12/2019 1800)
@@ -69,20 +70,18 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        String formattedStart, formattedEnd;
+        String formattedDate;
         if (hasTime) {
-            formattedStart = start.format(DateTimeFormatter.ofPattern("MMM dd yyyy, h:mma"));
-            formattedEnd = end.format(DateTimeFormatter.ofPattern("MMM dd yyyy, h:mma"));
+            formattedDate = dueDate.format(DateTimeFormatter.ofPattern("MMM dd yyyy, h:mma"));
         } else {
-            formattedStart = start.toLocalDate().format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
-            formattedEnd = end.toLocalDate().format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
+            formattedDate = dueDate.toLocalDate().format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
         }
-        return "[E] " + super.toString() + " (from: " + start + " to: " + end + ")";
+        return "[D] " + super.toString() + " (by: " + formattedDate + ")";
     }
 
     @Override
     public String writeSave() {
-        return "E" + "|" + (this.isItMarked() ? "1" : "0") + "|" + this.getContent() + "|" + this.start + "|" + this.end;
+        return "D" + "|" + (this.isItMarked() ? "1" : "0") + "|" + this.getContent() + "|" + this.dueDate;
     }
 
 }
