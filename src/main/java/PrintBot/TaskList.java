@@ -2,7 +2,7 @@ package PrintBot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.io.*;
 
 public class TaskList {
 
@@ -12,49 +12,15 @@ public class TaskList {
         this.storage = new ArrayList<>();
     }
 
-    public TaskList(String save) throws CorruptedSaveException {
-        this.storage = new ArrayList<>();
-
-        String[] taskStrings = save.split("/");
-
-        for (String taskString : taskStrings) {
-            String[] parts = taskString.split(",");
-            if (parts.length == 3) {
-                if (!parts[0].equals("T")) {
-                    throw new CorruptedSaveException();
-                }
-                boolean isMarked = Objects.equals(parts[2], "X");
-                this.storage.add(ToDo.createToDo(parts[1], isMarked));
-            } else if (parts.length == 4) {
-                if (!parts[0].equals("D")) {
-                    throw new CorruptedSaveException();
-                }
-                boolean isMarked = Objects.equals(parts[2], "X");
-                this.storage.add(Deadline.createDeadline(parts[1], isMarked, parts[3]));
-            } else if (parts.length == 5) {
-                if (!parts[0].equals("E")) {
-                    throw new CorruptedSaveException();
-                }
-                boolean isMarked = Objects.equals(parts[1], "X");
-                this.storage.add(Event.createEvent(parts[1], isMarked, parts[3], parts[4]));
-            } else {
-                throw new CorruptedSaveException();
-            }
-        }
-    }
-
     /*
      * @parameters
      * Task task
      *
      * @description
-     * add task object to task list, display current number of tasks
+     * add task object to task list
      */
     public void addTask(Task task) {
         this.storage.add(task);
-        System.out.println("Got it. I've added this task:");
-        System.out.printf(" %s\n", task.toString());
-        System.out.printf("Now you have %d tasks in the list.\n", this.storage.size());
     }
 
     /*
@@ -62,14 +28,12 @@ public class TaskList {
      * int index
      *
      * @description
-     * remove task at specified index in task list, display number of remaining tasks
+     * remove task at specified index in task list, return removed task
      */
-    public void deleteTask(int index) {
+    public Task deleteTask(int index) {
         Task removedTask = this.storage.get(index);
         this.storage.remove(index);
-        System.out.println("Noted. I've removed this task:");
-        System.out.printf(" %s\n", removedTask.toString());
-        System.out.printf("Now you have %d tasks in the list.\n", this.storage.size());
+        return removedTask;
     }
 
     public void markTask(int index) {
@@ -85,15 +49,17 @@ public class TaskList {
      * none
      *
      * @description
-     * print task list in order of initial storage
+     * return task list as single string in order of initial storage
      */
-    public void displayTaskList() {
-        System.out.println("Here are the tasks in your list:");
+    public String consolidateTaskList() {
+        StringBuilder output = new StringBuilder();
 
         for (int i = 0; i < this.storage.size(); i++) {
             Task currTask = this.storage.get(i);
-            System.out.printf("%d. %s\n", i + 1, currTask.toString());
+            output.append("\n").append(String.format("%d.", i + 1)).append(currTask.toString());
         }
+
+        return output.toString();
     }
 
     /*
@@ -103,9 +69,12 @@ public class TaskList {
      * @description
      * return string of task list for save
      */
-    public String saveFormat() {
-        return "";
-        // stub
+    public List<String> getSaveFormat() {
+        List<String> output = new ArrayList<>();
+        for (int i = 0; i < this.storage.size(); i++) {
+            output.add(this.storage.get(i).writeSave());
+        }
+        return output;
     }
 
     /*
@@ -115,8 +84,15 @@ public class TaskList {
      * @description
      * return this.storage.size()
      */
-    public int getTaskListSize() {
+    public int getSize() {
         return this.storage.size();
+    }
+
+    /*
+     * temporary getter
+     */
+    public Task getAtIndex(int index) {
+        return this.storage.get(index);
     }
 
 }

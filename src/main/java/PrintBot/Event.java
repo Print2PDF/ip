@@ -67,18 +67,6 @@ public class Event extends Task {
         }
     }
 
-    /*
-     * @factory method
-     * create new instance with corresponding mark status
-     */
-    public static Event createEvent(String content, boolean isMarked, String startDate, String endDate) {
-        Event newTask = new Event(content, startDate, endDate);
-        if (isMarked) {
-            newTask.mark();
-        }
-        return newTask;
-    }
-
     @Override
     public String toString() {
         String formattedStart, formattedEnd;

@@ -4,7 +4,6 @@ package PrintBot;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 /*
  * Store task name
@@ -66,18 +65,6 @@ public class Deadline extends Task {
             this.hasTime = false;
             return LocalDate.now().atStartOfDay();
         }
-    }
-
-    /*
-     * @factory method
-     * create new instance with corresponding mark status
-     */
-    public static Deadline createDeadline(String content, boolean isMarked, String dueDate) {
-        Deadline newTask = new Deadline(content, dueDate);
-        if (isMarked) {
-            newTask.mark();
-        }
-        return newTask;
     }
 
     @Override
