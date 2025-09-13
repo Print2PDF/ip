@@ -1,0 +1,9 @@
+todo borrow book
+event read book /from 2pm /to 4pm
+deadline return book /by 5pm
+mark 1
+hello
+list
+delete 1
+list
+bye
