@@ -24,8 +24,8 @@ public class Parser {
     public Parser() {}
 
     /*
-     * parse and execute commands
-     * boolean tells bot to continue or stop running (true: run, false: stop)
+     * parse user inputs and execute valid commands
+     * @param user input as String, TaskList object from PrintBot
      */
     public static void parseCommand(String input, TaskList taskList) {
         String[] parts = input.split(" ", 2); // {command, restOfInput}
@@ -46,7 +46,10 @@ public class Parser {
         }
     }
 
-    // these methods process inputs for Command objects
+    /*
+     * these functions below clean user input, and call ui functions and execute inputs as commands
+     */
+
     private static void botGreet() {
         ui.uiGreetUser();
     }
@@ -55,6 +58,10 @@ public class Parser {
         ui.uiByeUser();
     }
 
+    /*
+     * Function to print TaskList object
+     * @param user input without command identifier, TaskList object from PrintBot
+     */
     private static void botList(String restOfInput, TaskList taskList) {
         if (restOfInput != null && !restOfInput.trim().isEmpty()) {
             ui.uiErrorMsg("'list' command should not have any trailing inputs!");
@@ -63,6 +70,10 @@ public class Parser {
         }
     }
 
+    /*
+     * Function to mark task and print marked task
+     * @param user input without command identifier, TaskList object from PrintBot
+     */
     private static void botMark(String restOfInput, TaskList taskList) {
         Integer taskNum;
         try {
@@ -80,6 +91,10 @@ public class Parser {
         }
     }
 
+    /*
+     * Function to unmark task and print unmarked task
+     * @param user input without command identifier, TaskList object from PrintBot
+     */
     private static void botUnmark(String restOfInput, TaskList taskList) {
         Integer taskNum;
         try {
@@ -97,6 +112,10 @@ public class Parser {
         }
     }
 
+    /*
+     * Function to delete task and print deleted task
+     * @param user input without command identifier, TaskList object from PrintBot
+     */
     private static void botDelete(String restOfInput, TaskList taskList) {
         Integer taskNum;
         try {
@@ -114,6 +133,10 @@ public class Parser {
         }
     }
 
+    /*
+     * Function to add ToDo object and print add task message
+     * @param full user input, TaskList object from PrintBot
+     */
     private static void botAddTodo(String input, TaskList taskList) {
         Matcher m = PATTERN_TODO.matcher(input);
         if (!m.matches()) {
@@ -130,6 +153,10 @@ public class Parser {
         ui.uiAddTask(t, taskList);
     }
 
+    /*
+     * Function to add Deadline object and print add message
+     * @param full user input, TaskList object from PrintBot
+     */
     private static void botAddDeadline(String input, TaskList taskList) {
         Matcher m = PATTERN_DEADLINE.matcher(input);
         if (!m.matches()) {
@@ -147,6 +174,10 @@ public class Parser {
         ui.uiAddTask(t, taskList);
     }
 
+    /*
+     * Function to add Event object and print add task message
+     * @param full user input, TaskList object from PrintBot
+     */
     private static void botAddEvent(String input, TaskList taskList) {
         Matcher m = PATTERN_EVENT.matcher(input);
         if (!m.matches()) {

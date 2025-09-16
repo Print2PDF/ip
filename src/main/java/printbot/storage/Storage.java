@@ -14,7 +14,11 @@ public class Storage {
 
     public Storage() {}
 
-    // SAVE , LEVEL-7
+    /*
+     * static function to find, read save and create recorded TaskList object
+     * @param none
+     * @return TaskList object with recorded Task objects
+     */
     public static TaskList readSaveFile() {
         TaskList taskList = new TaskList();
         File file = new File(SAVE_FILE_PATH);
@@ -35,6 +39,11 @@ public class Storage {
         return taskList;
     }
 
+    /*
+     * static function to translate stored Task objects to save format as String, write to save file
+     * @param TaskList object from PrintBot
+     * @return none, but overwrites or creates save file
+     */
     public static void writeSaveFile(TaskList taskList) {
         File file = new File(SAVE_FILE_PATH);
         List<String> tLReadable = taskList.getSaveFormat();

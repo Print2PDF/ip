@@ -9,8 +9,17 @@ import printbot.tasks.TaskList;
 
 import java.util.*;
 
+/*
+ * PrintBot main class
+ * @author Eng Pin Wen <eng.pin.wen@gmail.com>
+ * @version 0.1
+ */
 public class PrintBot {
 
+    /*
+     * Main function to start PrintBot application
+     * @param args
+     */
     public static void main(String[] args) {
         Scanner inputReader = new Scanner(System.in);
         TaskList taskList = Storage.readSaveFile();
