@@ -61,6 +61,20 @@ public class TaskList {
         return output.toString();
     }
 
+    public String consolidateMatchList(String keyword) {
+        StringBuilder output = new StringBuilder();
+        int i = 0;
+
+        for (Task currTask : this.storage) {
+            if (currTask.hasKeyword(keyword)) {
+                i++;
+                output.append("\n").append(String.format("%d.", i)).append(currTask.toString());
+            }
+        }
+
+        return output.toString();
+    }
+
     /*
      * @parameters
      * none

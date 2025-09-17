@@ -102,4 +102,16 @@ public class Task {
 
     }
 
+    public boolean hasKeyword(String keyword) {
+        String[] words = this.content.split(" ");
+        for (String word : words) {
+            if (word.trim().equals(keyword)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
 }

@@ -18,6 +18,8 @@ public class Parser {
     private static final Pattern PATTERN_TODO = Pattern.compile("^todo\\s+(.+)$", Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_DEADLINE = Pattern.compile("^deadline\\s+(.+)\\s+/by\\s+(.+)$", Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_EVENT = Pattern.compile("^event\\s+(.+)\\s+/from\\s+(.+)\\s+/to\\s+(.+)$", Pattern.CASE_INSENSITIVE);
+    //Level-9
+    private static final Pattern PATTERN_FIND = Pattern.compile("^find\\s+(.+)$", Pattern.CASE_INSENSITIVE);
 
     private static final UI ui = new UI();
 
@@ -33,16 +35,17 @@ public class Parser {
         String restOfInput = parts.length > 1 ? parts[1] : "";
 
         switch (command) {
-            case ("greet"): botGreet(); break;
-            case ("bye"): botBye(); break; // tell bot to stop
-            case ("list"): botList(restOfInput, taskList); break;
-            case ("mark"): botMark(restOfInput, taskList); break;
-            case ("unmark"): botUnmark(restOfInput, taskList); break;
-            case ("delete"): botDelete(restOfInput, taskList); break;
-            case ("todo"): botAddTodo(input, taskList); break;
-            case ("deadline"): botAddDeadline(input, taskList); break;
-            case ("event"): botAddEvent(input, taskList); break;
-            default: unknownCommand(); break;
+        case ("greet"): botGreet(); break;
+        case ("bye"): botBye(); break;
+        case ("list"): botList(restOfInput, taskList); break;
+        case ("mark"): botMark(restOfInput, taskList); break;
+        case ("unmark"): botUnmark(restOfInput, taskList); break;
+        case ("delete"): botDelete(restOfInput, taskList); break;
+        case ("todo"): botAddTodo(input, taskList); break;
+        case ("deadline"): botAddDeadline(input, taskList); break;
+        case ("event"): botAddEvent(input, taskList); break;
+        case ("find"): botFind(input, taskList); break;
+        default: unknownCommand(); break;
         }
     }
 
@@ -194,6 +197,17 @@ public class Parser {
         Event t = new Event(content, startDate, endDate);
         taskList.addTask(t);
         ui.uiAddTask(t, taskList);
+    }
+
+    private static void botFind(String input, TaskList taskList) {
+        Matcher m = PATTERN_FIND.matcher(input);
+        if (!m.matches()) {
+            ui.uiErrorMsg("Oh no! Invalid format for finding keyword");
+            return;
+        }
+        String keyword = m.group(1).trim();
+        String result = taskList.consolidateMatchList(keyword);
+        ui.uiFindTask(result);
     }
 
     private static void unknownCommand() {

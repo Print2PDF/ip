@@ -88,6 +88,12 @@ public class UI {
         printMessage(header + "\n" + taskView);
     }
 
+    public void uiFindTask(String matchListString) {
+        String header = "Here are the matching tasks in your list:";
+        String matchView = matchListString;
+        printMessage(header + "\n" + matchView);
+    }
+
     // ERRORS, INVALID COMMANDS
     /*
      * Function to wrap error message
