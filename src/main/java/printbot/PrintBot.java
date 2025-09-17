@@ -1,24 +1,19 @@
 package printbot;
 
-// A-MOREOOP
+import java.util.Scanner;
 
-//import java.io.*;
 import printbot.parser.Parser;
 import printbot.storage.Storage;
 import printbot.tasks.TaskList;
 
-import java.util.*;
-
-/*
- * PrintBot main class
- * @author Eng Pin Wen <eng.pin.wen@gmail.com>
- * @version 0.1
+/**
+ * Class to initialise TaskList, Parser and start chatbot application
  */
 public class PrintBot {
 
-    /*
-     * Main function to start PrintBot application
-     * @param args
+    /**
+     * Function to start PrintBot application
+     * @param args not used
      */
     public static void main(String[] args) {
         Scanner inputReader = new Scanner(System.in);

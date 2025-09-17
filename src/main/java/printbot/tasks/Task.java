@@ -2,18 +2,18 @@ package printbot.tasks;
 
 import printbot.exceptions.CorruptedSaveException;
 
-/*
- * Contain mark status and content of task
+/**
+ * Class contain mark status and content (description) of task
  */
 public class Task {
 
     private boolean isMarked;
     private final String content;
 
-    /*
+    /**
      * Constructor
-     * Store content
-     * Mark as unmarked (false)
+     * Store content (description)
+     * Start as unmarked (false)
      */
     public Task(String content) {
         this.isMarked = false;
@@ -52,6 +52,9 @@ public class Task {
         this.isMarked = false;
     }
 
+    /**
+     * Base string format for a task
+     */
     public String toString() {
         String markStatus = this.isMarked ? "X" : " ";
         return String.format("[%s] %s", markStatus, this.content);
@@ -69,6 +72,9 @@ public class Task {
         return "task"; // stub
     }
 
+    /**
+     * Function to translate save format to Task object
+     */
     public static Task readSave(String data) throws CorruptedSaveException {
         String[] parts = data.split("\\|");
         String taskType = parts[0].trim();
@@ -78,17 +84,16 @@ public class Task {
 
         try {
             switch (taskType) {
-                case "T":
-                    task = new ToDo(parts[2].trim());
-                    break;
-                case "D":
-                    task = new Deadline(parts[2].trim(), parts[3].trim());
-                    break;
-                case "E":
-                    task = new Event(parts[2].trim(), parts[3].trim(), parts[4].trim());
-                    break;
-                default:
-                    throw new CorruptedSaveException();
+            case "T":
+                task = new ToDo(parts[2].trim());
+                break;
+            case "D":
+                task = new Deadline(parts[2].trim(), parts[3].trim());
+                break;
+            case "E":
+                task = new Event(parts[2].trim(), parts[3].trim(), parts[4].trim());
+                break;
+            default: throw new CorruptedSaveException();
             }
         } catch (Exception e) {
             throw new CorruptedSaveException();
@@ -102,7 +107,7 @@ public class Task {
 
     }
 
-    /*
+    /**
      * Function to find keyword in description
      * @param keyword to be search
      * @return boolean, true if keyword in description, else false
@@ -116,7 +121,7 @@ public class Task {
         }
         return false;
     }
-    
+
 
 
 }

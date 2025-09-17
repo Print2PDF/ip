@@ -1,10 +1,11 @@
 package printbot.ui;
 
-// A-MOREOOP
-
 import printbot.tasks.Task;
 import printbot.tasks.TaskList;
 
+/**
+ * Class that contains functions to display messages in the console
+ */
 public class UI {
 
     private static final String LINE = "___________________________________";
@@ -37,18 +38,19 @@ public class UI {
         printMessage("Bye. Hope to see you again soon!\n");
     }
 
-    /*
+    /**
      * Function to print all recorded tasks
-     * @param TaskList object from Parser from PrintBot
+     * @param taskList from Parser from PrintBot
      */
     public void uiPrintTasks(TaskList taskList) {
         String output = "Here are the tasks in your list:\n";
         printMessage(output + taskList.consolidateTaskList());
     }
 
-    /*
+    /**
      * Function to print added task and acknowledge user command
-     * @param added Task object, TaskList object from Parser from PrintBot
+     * @param task added by command called by Parser
+     * @param taskList from Parser from PrintBot
      */
     public void uiAddTask(Task task, TaskList taskList) {
         String header = "Got it. I've added this task:";
@@ -57,9 +59,10 @@ public class UI {
         printMessage(header + "\n" + taskView + "\n" + tail);
     }
 
-    /*
+    /**
      * Function to print deleted task and acknowledge user command
-     * @param deleted Task object, TaskList object from Parser from PrintBot
+     * @param task deleted by command called by Parser
+     * @param taskList from Parser from PrintBot
      */
     public void uiDeleteTask(Task task, TaskList taskList) {
         String header = "Noted. I've removed this task:";
@@ -68,9 +71,9 @@ public class UI {
         printMessage(header + "\n" + taskView + "\n" + tail);
     }
 
-    /*
+    /**
      * Function to print marked task and acknowledge user command
-     * @param marked Task object
+     * @param task marked by command called by Parser
      */
     public void uiMarkTask(Task task) {
         String header = "Nice, I've marked this task as done:";
@@ -78,9 +81,9 @@ public class UI {
         printMessage(header + "\n" + taskView);
     }
 
-    /*
+    /**
      * Function to print unmarked task and acknowledge user command
-     * @param unmarked Task object
+     * @param task unmarked by command called by Parser
      */
     public void uiUnmarkTask(Task task) {
         String header = "OK, I've marked this task as not done:";
@@ -88,6 +91,10 @@ public class UI {
         printMessage(header + "\n" + taskView);
     }
 
+    /**
+     * Function to print list of tasks containing search word in the description
+     * @param matchListString from consolidatedMatchList called by Parser
+     */
     public void uiFindTask(String matchListString) {
         String header = "Here are the matching tasks in your list:";
         String matchView = matchListString;

@@ -3,6 +3,9 @@ package printbot.tasks;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class as container containing all stored Task objects
+ */
 public class TaskList {
 
     private final List<Task> storage;
@@ -22,12 +25,10 @@ public class TaskList {
         this.storage.add(task);
     }
 
-    /*
-     * @parameters
-     * int index
-     *
-     * @description
-     * remove task at specified index in task list, return removed task
+    /**
+     * Function to remove task from list and return it
+     * @param index
+     * @return Task object that was deleted
      */
     public Task deleteTask(int index) {
         Task removedTask = this.storage.get(index);
@@ -43,12 +44,9 @@ public class TaskList {
         this.storage.get(index).unmark();
     }
 
-    /*
-     * @parameters
-     * none
-     *
-     * @description
-     * return task list as single string in order of initial storage
+    /**
+     * Function to create string representation of taskList
+     * @return String representation of taskList
      */
     public String consolidateTaskList() {
         StringBuilder output = new StringBuilder();
@@ -61,6 +59,11 @@ public class TaskList {
         return output.toString();
     }
 
+    /**
+     * Function to create string of all matching tasks in taskList
+     * @param keyword search word to be found
+     * @return String representation to all matching tasks
+     */
     public String consolidateMatchList(String keyword) {
         StringBuilder output = new StringBuilder();
         int i = 0;
