@@ -102,6 +102,11 @@ public class Task {
 
     }
 
+    /*
+     * Function to find keyword in description
+     * @param keyword to be search
+     * @return boolean, true if keyword in description, else false
+     */
     public boolean hasKeyword(String keyword) {
         String[] words = this.content.split(" ");
         for (String word : words) {
@@ -111,7 +116,7 @@ public class Task {
         }
         return false;
     }
-
+    
 
 
 }
