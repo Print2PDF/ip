@@ -23,7 +23,6 @@ import printbot.exceptions.DateTimeInvalidException;
 import printbot.exceptions.FormatDeadlineException;
 import printbot.exceptions.FormatEventException;
 import printbot.exceptions.IndexException;
-import printbot.exceptions.PrintException;
 import printbot.exceptions.TaskNameEmptyException;
 import printbot.tasks.Deadline;
 import printbot.tasks.Event;
@@ -59,9 +58,9 @@ public class Parser {
 
         switch (cmd) {
         case ("greet"):
-            return botGreet();
+            return new GreetCommand();
         case ("bye"):
-            return botBye();
+            return new ExitCommand();
         case ("list"):
             return botList(restOfInput);
         case ("find"):
@@ -85,20 +84,13 @@ public class Parser {
         }
     }
 
-    private static Command botGreet() {
-        return new GreetCommand();
-    }
-
-    private static Command botBye() {
-        return new ExitCommand();
-    }
-
     /*
-     * Function to print TaskList object
-     * @param user input without command identifier, TaskList object from PrintBot
+     * All the helper methods have been refactored to check conditions and throw exceptions early.
+     * This "fail-fast" approach reduces nesting and improves readability.
      */
+
     private static Command botList(String restOfInput) throws CommandException {
-        if (restOfInput != null && !restOfInput.trim().isEmpty()) {
+        if (!restOfInput.isEmpty()) {
             throw new CommandException();
         }
         return new ListCommand();
@@ -113,49 +105,34 @@ public class Parser {
         return new FindCommand(keyword);
     }
 
-    private static Command botMark(String restOfInput, TaskList taskList) throws CommandException, IndexException {
-        Integer taskNum;
+    /*
+     * AI-Assisted:
+     * This private helper method encapsulates the repetitive try-catch logic
+     * that was duplicated in botMark, botUnmark, and botDelete.
+     */
+    private static int parseTaskNumber(String input) throws CommandException, IndexException {
         try {
-            taskNum = Integer.parseInt(restOfInput.trim()) - 1;
-            return new MarkCommand(taskNum);
+            return Integer.parseInt(input.trim()) - 1;
         } catch (NumberFormatException e) {
             throw new CommandException();
         } catch (IndexOutOfBoundsException e) {
             throw new IndexException();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new CommandException();
         }
+    }
+
+    private static Command botMark(String restOfInput, TaskList taskList) throws CommandException, IndexException {
+        int taskNum = parseTaskNumber(restOfInput);
+        return new MarkCommand(taskNum);
     }
 
     private static Command botUnmark(String restOfInput, TaskList taskList) throws CommandException, IndexException {
-        Integer taskNum;
-        try {
-            taskNum = Integer.parseInt(restOfInput.trim()) - 1;
-            return new UnmarkCommand(taskNum);
-        } catch (NumberFormatException e) {
-            throw new CommandException();
-        } catch (IndexOutOfBoundsException e) {
-            throw new IndexException();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new CommandException();
-        }
+        int taskNum = parseTaskNumber(restOfInput);
+        return new UnmarkCommand(taskNum);
     }
 
     private static Command botDelete(String restOfInput, TaskList taskList) throws CommandException, IndexException {
-        Integer taskNum;
-        try {
-            taskNum = Integer.parseInt(restOfInput.trim()) - 1;
-            return new DeleteCommand(taskNum);
-        } catch (NumberFormatException e) {
-            throw new CommandException();
-        } catch (IndexOutOfBoundsException e) {
-            throw new IndexException();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new CommandException();
-        }
+        int taskNum = parseTaskNumber(restOfInput);
+        return new DeleteCommand(taskNum);
     }
 
     private static Command botAddTodo(String input, TaskList taskList) throws CommandException, TaskNameEmptyException {
@@ -181,7 +158,8 @@ public class Parser {
         String dueDate = m.group(2).trim();
         if (content.isEmpty()) {
             throw new TaskNameEmptyException();
-        } else if (dueDate.isEmpty()) {
+        }
+        if (dueDate.isEmpty()) {
             throw new FormatDeadlineException();
         }
         Deadline task = new Deadline(content, dueDate);
@@ -199,7 +177,8 @@ public class Parser {
         String endDate = m.group(3).trim();
         if (content.isEmpty()) {
             throw new TaskNameEmptyException();
-        } else if (startDate.isEmpty() || endDate.isEmpty()) {
+        }
+        if (startDate.isEmpty() || endDate.isEmpty()) {
             throw new FormatEventException();
         }
         Event task = new Event(content, startDate, endDate);
@@ -207,7 +186,7 @@ public class Parser {
     }
 
     private static Command botHelp(String restOfInputs) throws CommandException {
-        if (restOfInputs != null && !restOfInputs.trim().isEmpty()) {
+        if (!restOfInputs.isEmpty()) {
             throw new CommandException();
         }
         return new HelpCommand();
@@ -223,8 +202,7 @@ public class Parser {
      */
     public static LocalDateTime parseDateTime(String input) throws DateTimeInvalidException {
         try {
-            LocalDateTime dateTime = LocalDateTime.parse(input, DATE_TIME_FORMATTER);
-            return dateTime;
+            return LocalDateTime.parse(input, DATE_TIME_FORMATTER);
         } catch (DateTimeParseException e) {
             throw new DateTimeInvalidException();
         }
