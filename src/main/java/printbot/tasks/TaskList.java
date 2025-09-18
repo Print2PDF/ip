@@ -16,33 +16,45 @@ public class TaskList {
         this.storage = new ArrayList<>();
     }
 
-    /*
-     * @parameters
-     * Task task
-     *
-     * @description
-     * add task object to task list
+    /**
+     * Function to add task into list
+     * @param task to be added
      */
     public void addTask(Task task) {
+        assert task != null : "Cannot add a null task";
         this.storage.add(task);
     }
 
     /**
      * Function to remove task from list and return it
-     * @param index
+     * @param index of task to be deleted
      * @return Task object that was deleted
      */
     public Task deleteTask(int index) {
+        assert index >= 0 : "Index cannot be negative";
+        assert index < this.storage.size() : "Index cannot be out of bounds";
         Task removedTask = this.storage.get(index);
         this.storage.remove(index);
         return removedTask;
     }
 
+    /**
+     * Function to mark task at specified index
+     * @param index of task to be marked
+     */
     public void markTask(int index) {
+        assert index >= 0 : "Index cannot be negative";
+        assert index < this.storage.size() : "Index cannot be out of bounds";
         this.storage.get(index).mark();
     }
 
+    /**
+     * Function to unmark task at specified index
+     * @param index of task to be unmarked
+     */
     public void unmarkTask(int index) {
+        assert index >= 0 : "Index cannot be negative";
+        assert index < this.storage.size() : "Index cannot be out of bounds";
         this.storage.get(index).unmark();
     }
 

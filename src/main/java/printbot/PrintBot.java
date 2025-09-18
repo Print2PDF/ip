@@ -1,7 +1,5 @@
 package printbot;
 
-import java.util.Scanner;
-
 import printbot.commands.Command;
 import printbot.commands.GreetCommand;
 import printbot.parser.Parser;
@@ -13,7 +11,6 @@ import printbot.ui.UI;
  * Class to initialise TaskList, Parser and start chatbot application
  */
 public class PrintBot {
-    private Scanner scanner;
     private TaskList taskList;
     private UI ui;
     private Storage storage;
@@ -22,7 +19,6 @@ public class PrintBot {
      * Constructor for PrintBot using existing save file
      */
     public PrintBot() {
-        this.scanner = new Scanner(System.in);
         this.taskList = new TaskList();
         this.ui = new UI();
         this.storage = new Storage();
