@@ -17,11 +17,13 @@ public class MarkCommand extends Command {
      * @param index of task in taskList to be marked
      */
     public MarkCommand(int index) {
+        assert index >= 0 : "Cannot mark a task at negative index";
         this.index = index;
     }
 
     @Override
     public String execute(TaskList taskList, UI ui, Storage storage) {
+        assert taskList != null : "Cannot mark a task in a null task list";
         taskList.markTask(this.index);
         Task task = taskList.getAtIndex(this.index);
         return ui.uiMarkTask(task);
