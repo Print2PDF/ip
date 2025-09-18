@@ -4,10 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/*
- * Store task name
- * Store start date and end date (duration of event)
- * Indicator is [E]
+/**
+ * Class represent Event task
  */
 public class Event extends Task {
 
@@ -15,6 +13,10 @@ public class Event extends Task {
     private LocalDateTime end;
     private boolean hasTime;
 
+    /**
+     * Default constructor parses content and datetime
+     * @param content as full user input
+     */
     public Event(String content) {
         super(content.split("/from ", 2)[0]);
         String[] parts = content.split("/from ", 2);
@@ -23,6 +25,12 @@ public class Event extends Task {
         this.end = parseDateTime(parts[1]);
     }
 
+    /**
+     * Constructor if content and dates are separated
+     * @param content as task description
+     * @param from as start date of task
+     * @param to as end date of task
+     */
     public Event(String content, String from, String to) {
         super(content);
         this.start = parseDateTime(from);
@@ -69,7 +77,8 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        String formattedStart, formattedEnd;
+        String formattedStart;
+        String formattedEnd;
         if (hasTime) {
             formattedStart = start.format(DateTimeFormatter.ofPattern("MMM dd yyyy, h:mma"));
             formattedEnd = end.format(DateTimeFormatter.ofPattern("MMM dd yyyy, h:mma"));

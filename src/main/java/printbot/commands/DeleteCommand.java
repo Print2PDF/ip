@@ -3,15 +3,13 @@ package printbot.commands;
 import printbot.storage.Storage;
 import printbot.tasks.Task;
 import printbot.tasks.TaskList;
-import printbot.exceptions.PrintException;
 import printbot.ui.UI;
 
 /**
  * Class represent command to delete task
  */
 public class DeleteCommand extends Command {
-
-    private int index;
+    private final int index;
 
     /**
      * Constructor to create delete task for specified index

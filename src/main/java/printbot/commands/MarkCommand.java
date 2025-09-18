@@ -9,8 +9,7 @@ import printbot.ui.UI;
  * Class represent command to mark specified task at index
  */
 public class MarkCommand extends Command {
-
-    private int index;
+    private final int index;
 
     /**
      * Constructor to create mark task at specified index

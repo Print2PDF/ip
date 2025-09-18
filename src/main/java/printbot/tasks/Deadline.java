@@ -6,16 +6,18 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/*
- * Store task name
- * Store end date (deadline)
- * Indicator is [D]
+/**
+ * Class represent Deadline task
  */
 public class Deadline extends Task {
 
     private LocalDateTime dueDate;
     private boolean hasTime;
 
+    /**
+     * Default constructor parses content and datetime
+     * @param content as full user input
+     */
     public Deadline(String content) {
         super(content.split("/by ", 2)[0]);
         String[] parts = content.split("/by ", 2);
@@ -23,6 +25,11 @@ public class Deadline extends Task {
         this.dueDate = parseDateTime(parts[1]);
     }
 
+    /**
+     * Constructor if content and due date are separated
+     * @param content as task description
+     * @param dueDate as deadline of task
+     */
     public Deadline(String content, String dueDate) {
         super(content);
         //this.dueDate = dueDate;
