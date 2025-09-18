@@ -9,7 +9,7 @@ import printbot.ui.UI;
  * Class represent command to delete task
  */
 public class DeleteCommand extends Command {
-    private int index;
+    private final int index;
 
     /**
      * Constructor to create delete task for specified index

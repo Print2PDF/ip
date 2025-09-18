@@ -1,25 +1,12 @@
 package printbot.tasks;
 
-/*
- * Store task name
- * Indicator is [T]
+/**
+ * Class represent Todo task
  */
 public class ToDo extends Task {
 
     public ToDo(String content) {
         super(content);
-    }
-
-    /*
-     * @factory method
-     * create new instance with corresponding mark status
-     */
-    public static ToDo createToDo(String content, boolean isMarked) {
-        ToDo newTask = new ToDo(content);
-        if (isMarked) {
-            newTask.mark();
-        }
-        return newTask;
     }
 
     @Override

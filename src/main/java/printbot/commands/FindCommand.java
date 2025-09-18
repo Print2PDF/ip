@@ -8,8 +8,7 @@ import printbot.ui.UI;
  * Class to represent command to find all tasks containing the keyword
  */
 public class FindCommand extends Command {
-
-    private String keyword;
+    private final String keyword;
 
     /**
      * Constructor to set keyword to be searched for
