@@ -6,23 +6,25 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import printbot.exceptions.DateTimeInvalidException;
+import printbot.parser.Parser;
+
 /**
  * Class represent Deadline task
  */
 public class Deadline extends Task {
 
     private LocalDateTime dueDate;
-    private boolean hasTime;
 
     /**
      * Default constructor parses content and datetime
      * @param content as full user input
      */
-    public Deadline(String content) {
+    public Deadline(String content) throws DateTimeInvalidException {
         super(content.split("/by ", 2)[0]);
         String[] parts = content.split("/by ", 2);
         //this.dueDate = parts[1];
-        this.dueDate = parseDateTime(parts[1]);
+        this.dueDate = Parser.parseDateTime(parts[1]);
     }
 
     /**
@@ -30,65 +32,21 @@ public class Deadline extends Task {
      * @param content as task description
      * @param dueDate as deadline of task
      */
-    public Deadline(String content, String dueDate) {
+    public Deadline(String content, String dueDate) throws DateTimeInvalidException {
         super(content);
-        //this.dueDate = dueDate;
-        this.dueDate = parseDateTime(dueDate);
-    }
-
-    // LEVEL-8: parse datetime
-    private LocalDateTime parseDateTime(String dateTimeString){
-        try {
-            // Format: d/M/yyyy HHmm (e.g., 2/12/2019 1800)
-            if (dateTimeString.matches("\\d{1,2}/\\d{1,2}/\\d{4} \\d{4}")) {
-                String[] parts = dateTimeString.split(" ");
-                String[] dateParts = parts[0].split("/");
-                int day = Integer.parseInt(dateParts[0]);
-                int month = Integer.parseInt(dateParts[1]);
-                int year = Integer.parseInt(dateParts[2]);
-                int hour = Integer.parseInt(parts[1].substring(0, 2));
-                int minute = Integer.parseInt(parts[1].substring(2, 4));
-
-                this.hasTime = true;
-                return LocalDateTime.of(year, month, day, hour, minute);
-            }
-
-            // Format: yyyy-MM-dd HHmm (e.g. 2019-10-15 1800)
-            if (dateTimeString.matches("\\d{4}-\\d{2}-\\d{2} \\d{4}")) {
-                this.hasTime = true;
-                return LocalDateTime.parse(dateTimeString, DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
-            }
-
-            // Format: yyyy-MM-dd (e.g. 2019-10-15)
-            if (dateTimeString.matches("\\d{4}-\\d{2}-\\d{2}")) {
-                this.hasTime = false;
-                LocalDate date = LocalDate.parse(dateTimeString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                return date.atStartOfDay();
-            }
-
-            // treat as date only
-            this.hasTime = false; // i.e. still false
-            return LocalDate.now().atStartOfDay();
-        } catch (Exception e) {
-            this.hasTime = false;
-            return LocalDate.now().atStartOfDay();
-        }
+        this.dueDate = Parser.parseDateTime(dueDate);
     }
 
     @Override
     public String toString() {
-        String formattedDate;
-        if (hasTime) {
-            formattedDate = dueDate.format(DateTimeFormatter.ofPattern("MMM dd yyyy, h:mma"));
-        } else {
-            formattedDate = dueDate.toLocalDate().format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
-        }
-        return "[D] " + super.toString() + " (by: " + formattedDate + ")";
+        return "[D] " + super.toString() + " (by: " + Parser.dateToString(this.dueDate) + ")";
     }
 
     @Override
     public String writeSave() {
-        return "D" + "|" + (this.isItMarked() ? "1" : "0") + "|" + this.getContent() + "|" + this.dueDate;
+        String date = String.format("%02d", this.dueDate.getDayOfMonth()) + "/" + this.dueDate.getMonthValue()
+                + "/" + this.dueDate.getYear() + " " + this.dueDate.getHour() + ":" + this.dueDate.getMinute();
+        return "D | " + (this.isItMarked() ? "1" : "0") + " | " + this.getContent() + " | " + date;
     }
 
 }

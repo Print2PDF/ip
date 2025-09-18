@@ -3,6 +3,7 @@ package printbot.parser;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,7 +35,7 @@ import printbot.tasks.ToDo;
  */
 public class Parser {
 
-    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     private static final Pattern PATTERN_TODO = Pattern.compile("^todo\\s+(.+)$",
             Pattern.CASE_INSENSITIVE);
@@ -170,7 +171,8 @@ public class Parser {
         return new AddCommand(task);
     }
 
-    private static Command botAddDeadline(String input, TaskList taskList) throws FormatDeadlineException, TaskNameEmptyException {
+    private static Command botAddDeadline(String input, TaskList taskList) throws FormatDeadlineException,
+            TaskNameEmptyException, DateTimeInvalidException {
         Matcher m = PATTERN_DEADLINE.matcher(input);
         if (!m.matches()) {
             throw new FormatDeadlineException();
@@ -186,7 +188,8 @@ public class Parser {
         return new AddCommand(task);
     }
 
-    private static Command botAddEvent(String input, TaskList taskList) throws FormatEventException, TaskNameEmptyException {
+    private static Command botAddEvent(String input, TaskList taskList) throws FormatEventException,
+            TaskNameEmptyException, DateTimeInvalidException {
         Matcher m = PATTERN_EVENT.matcher(input);
         if (!m.matches()) {
             throw new FormatEventException();
@@ -216,7 +219,7 @@ public class Parser {
      * Function to translate string representation of datetime to DateTime object
      * @param input as datetime part of user input
      * @return localDateTime object as DateTime representation
-     * @throws PrintException if string representation is not a valid input
+     * @throws DateTimeInvalidException if string representation is not a valid input
      */
     public static LocalDateTime parseDateTime(String input) throws DateTimeInvalidException {
         try {
@@ -225,5 +228,18 @@ public class Parser {
         } catch (DateTimeParseException e) {
             throw new DateTimeInvalidException();
         }
+    }
+
+    /**
+     * Function to translate datetime to string
+     * @param input LocalDateTime input
+     * @return String datetime as string
+     */
+    public static String dateToString(LocalDateTime input) {
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+        DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMM", Locale.ENGLISH);
+        String time = input.format(timeFormatter);
+        String month = input.format(monthFormatter);
+        return input.getDayOfMonth() + " " + month + " " + input.getYear() + " " + time;
     }
 }

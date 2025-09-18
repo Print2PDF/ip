@@ -126,7 +126,7 @@ public class UI {
         help.append("Search:\n");
         help.append("  find <keyword>                        - Find tasks containing keyword\n\n");
 
-        help.append("Date Format: d/M/yyyy HHmm (e.g., 2/12/2019 1800)\n");
+        help.append("Date Format: dd/MM/yyyy HH:mm (e.g., 2/12/2019 1800)\n");
         help.append("\nExamples:\n");
         help.append("  todo read book\n");
         help.append("  deadline return book /by 2/12/2019 1800\n");
@@ -138,15 +138,15 @@ public class UI {
     }
 
     // ERRORS, INVALID COMMANDS
-    /*
+    /**
      * Function to wrap error message
-     * @param error message
+     * @param msg error message
      */
     public String uiErrorMsg(String msg) {
         return msg;
     }
 
-    /*
+    /**
      * Function to alert user of invalid command
      */
     public String uiUnknownCmd() {
