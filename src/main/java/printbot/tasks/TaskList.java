@@ -80,12 +80,9 @@ public class TaskList {
                 .collect(Collectors.joining("\n"));
     }
 
-    /*
-     * @parameters
-     * none
-     *
-     * @description
-     * return string of task list for save
+    /**
+     * Function to get list of tasks, each task in save string format
+     * @return List<String></String>
      */
     public List<String> getSaveFormat() {
         return this.storage.stream()
@@ -93,22 +90,20 @@ public class TaskList {
                 .collect(Collectors.toList());
     }
 
-    /*
-     * @parameters
-     * none
-     *
-     * @description
-     * return this.storage.size()
+    /**
+     * Function to get this.storage size, use for checking index out of bounds
+     * @return int size of this.storage
      */
     public int getSize() {
         return this.storage.size();
     }
 
-    /*
-     * temporary getter
+    /**
+     * Function to get task at specified index
+     * @param index of task to get
+     * @return Task instance at index in this.storage
      */
     public Task getAtIndex(int index) {
         return this.storage.get(index);
     }
-
 }
