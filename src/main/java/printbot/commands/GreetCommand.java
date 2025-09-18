@@ -5,13 +5,13 @@ import printbot.tasks.TaskList;
 import printbot.ui.UI;
 
 /**
- * Class represent command to display list of stored tasks
+ * Command to greet user
  */
-public class ListCommand extends Command {
+public class GreetCommand extends Command {
 
     @Override
     public String execute(TaskList taskList, UI ui, Storage storage) {
-        return ui.uiPrintTasks(taskList);
+        return ui.uiGreetUser();
     }
 
     @Override

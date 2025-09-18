@@ -5,13 +5,13 @@ import printbot.tasks.TaskList;
 import printbot.ui.UI;
 
 /**
- * Class represent command to display list of stored tasks
+ * Command for default
  */
-public class ListCommand extends Command {
+public class UnknownCommand extends Command {
 
     @Override
     public String execute(TaskList taskList, UI ui, Storage storage) {
-        return ui.uiPrintTasks(taskList);
+        return ui.uiErrorMsg("Sorry! I do not know this command.");
     }
 
     @Override

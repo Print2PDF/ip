@@ -1,25 +1,31 @@
 package printbot.storage;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
 
 import printbot.exceptions.CorruptedSaveException;
 import printbot.tasks.Task;
 import printbot.tasks.TaskList;
 
-import java.io.*;
-import java.util.List;
-
+/**
+ * Class to read and write save files
+ */
 public class Storage {
 
     private static final String SAVE_FILE_PATH = "./taskSave.txt";
 
     public Storage() {}
 
-    /*
-     * static function to find, read save and create recorded TaskList object
-     * @param none
+    /**
+     * Function to find, read save and create recorded TaskList object
      * @return TaskList object with recorded Task objects
      */
-    public static TaskList readSaveFile() {
+    public TaskList readSaveFile() {
         TaskList taskList = new TaskList();
         File file = new File(SAVE_FILE_PATH);
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -39,12 +45,11 @@ public class Storage {
         return taskList;
     }
 
-    /*
-     * static function to translate stored Task objects to save format as String, write to save file
-     * @param TaskList object from PrintBot
-     * @return none, but overwrites or creates save file
+    /**
+     * Function to translate stored Task objects to save format as String, write to save file
+     * @param taskList object from PrintBot
      */
-    public static void writeSaveFile(TaskList taskList) {
+    public void writeSaveFile(TaskList taskList) {
         File file = new File(SAVE_FILE_PATH);
         List<String> tLReadable = taskList.getSaveFormat();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {

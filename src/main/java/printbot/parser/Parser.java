@@ -6,20 +6,34 @@ import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import printbot.commands.AddCommand;
+import printbot.commands.Command;
+import printbot.commands.DeleteCommand;
+import printbot.commands.ExitCommand;
+import printbot.commands.FindCommand;
+import printbot.commands.GreetCommand;
+import printbot.commands.ListCommand;
+import printbot.commands.MarkCommand;
+import printbot.commands.UnknownCommand;
+import printbot.commands.UnmarkCommand;
+import printbot.exceptions.CommandException;
+import printbot.exceptions.DateTimeInvalidException;
+import printbot.exceptions.FormatDeadlineException;
+import printbot.exceptions.FormatEventException;
+import printbot.exceptions.IndexException;
 import printbot.exceptions.PrintException;
+import printbot.exceptions.TaskNameEmptyException;
 import printbot.tasks.Deadline;
 import printbot.tasks.Event;
-import printbot.tasks.Task;
 import printbot.tasks.TaskList;
 import printbot.tasks.ToDo;
-import printbot.ui.UI;
 
 /**
  * Class to read user input and call corresponding commands and ui functions
  */
 public class Parser {
 
-    public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
 
     private static final Pattern PATTERN_TODO = Pattern.compile("^todo\\s+(.+)$",
             Pattern.CASE_INSENSITIVE);
@@ -27,224 +41,163 @@ public class Parser {
             Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_EVENT = Pattern.compile("^event\\s+(.+)\\s+/from\\s+(.+)\\s+/to\\s+(.+)$",
             Pattern.CASE_INSENSITIVE);
-    //Level-9
     private static final Pattern PATTERN_FIND = Pattern.compile("^find\\s+(.+)$",
             Pattern.CASE_INSENSITIVE);
-
-    private static final UI ui = new UI();
-
-    public Parser() {}
 
     /**
      * Function to parse user inputs and execute valid commands
      * @param input as user input
-     * @param taskList from PrintBot
+     * @param taskList as current task list
      */
-    public static void parseCommand(String input, TaskList taskList) {
+    public static Command parseInput(String input, TaskList taskList) throws Exception {
+        input = input.trim();
         String[] parts = input.split(" ", 2); // {command, restOfInput}
-        String command = parts[0].trim();
+        String cmd = parts[0].trim();
         String restOfInput = parts.length > 1 ? parts[1] : "";
 
-        switch (command) {
+        switch (cmd) {
         case ("greet"):
-            botGreet();
-            break;
+            return botGreet();
         case ("bye"):
-            botBye();
-            break;
+            return botBye();
         case ("list"):
-            botList(restOfInput, taskList);
-            break;
-        case ("mark"):
-            botMark(restOfInput, taskList);
-            break;
-        case ("unmark"):
-            botUnmark(restOfInput, taskList);
-            break;
-        case ("delete"):
-            botDelete(restOfInput, taskList);
-            break;
-        case ("todo"):
-            botAddTodo(input, taskList);
-            break;
-        case ("deadline"):
-            botAddDeadline(input, taskList);
-            break;
-        case ("event"):
-            botAddEvent(input, taskList);
-            break;
+            return botList(restOfInput);
         case ("find"):
-            botFind(input, taskList);
-            break;
+            return botFind(input);
+        case ("mark"):
+            return botMark(restOfInput, taskList);
+        case ("unmark"):
+            return botUnmark(restOfInput, taskList);
+        case ("delete"):
+            return botDelete(restOfInput, taskList);
+        case ("todo"):
+            return botAddTodo(input, taskList);
+        case ("deadline"):
+            return botAddDeadline(input, taskList);
+        case ("event"):
+            return botAddEvent(input, taskList);
         default:
-            unknownCommand();
-            break;
+            return new UnknownCommand();
         }
     }
 
-    /*
-     * these functions below clean user input, and call ui functions and execute inputs as commands
-     */
-
-    private static void botGreet() {
-        ui.uiGreetUser();
+    private static Command botGreet() {
+        return new GreetCommand();
     }
 
-    private static void botBye() {
-        ui.uiByeUser();
+    private static Command botBye() {
+        return new ExitCommand();
     }
 
     /*
      * Function to print TaskList object
      * @param user input without command identifier, TaskList object from PrintBot
      */
-    private static void botList(String restOfInput, TaskList taskList) {
+    private static Command botList(String restOfInput) throws CommandException {
         if (restOfInput != null && !restOfInput.trim().isEmpty()) {
-            ui.uiErrorMsg("'list' command should not have any trailing inputs!");
-        } else {
-            ui.uiPrintTasks(taskList);
+            throw new CommandException();
         }
+        return new ListCommand();
     }
 
-    /*
-     * Function to mark task and print marked task
-     * @param user input without command identifier, TaskList object from PrintBot
-     */
-    private static void botMark(String restOfInput, TaskList taskList) {
+    private static Command botFind(String input) throws CommandException {
+        Matcher m = PATTERN_FIND.matcher(input);
+        if (!m.matches()) {
+            throw new CommandException();
+        }
+        String keyword = m.group(1).trim();
+        return new FindCommand(keyword);
+    }
+
+    private static Command botMark(String restOfInput, TaskList taskList) throws CommandException, IndexException {
         Integer taskNum;
         try {
-            taskNum = Integer.parseInt(restOfInput.trim()) - 1; // 1-based to 0-based
+            taskNum = Integer.parseInt(restOfInput.trim()) - 1;
+            return new MarkCommand(taskNum);
+        } catch (NumberFormatException e) {
+            throw new CommandException();
+        } catch (IndexOutOfBoundsException e) {
+            throw new IndexException();
         } catch (Exception e) {
-            ui.uiErrorMsg("Oh no! Invalid task number!");
-            return;
-        }
-        try {
-            Task task = taskList.getAtIndex(taskNum); // will remove later
-            taskList.markTask(taskNum);
-            ui.uiMarkTask(task);
-        } catch (Exception e) {
-            ui.uiErrorMsg("Oh no! Task object does not exist at this index!");
+            System.out.println(e.getMessage());
+            throw new CommandException();
         }
     }
 
-    /*
-     * Function to unmark task and print unmarked task
-     * @param user input without command identifier, TaskList object from PrintBot
-     */
-    private static void botUnmark(String restOfInput, TaskList taskList) {
+    private static Command botUnmark(String restOfInput, TaskList taskList) throws CommandException, IndexException {
         Integer taskNum;
         try {
-            taskNum = Integer.parseInt(restOfInput.trim()) - 1; // 1-based to 0-based
+            taskNum = Integer.parseInt(restOfInput.trim()) - 1;
+            return new UnmarkCommand(taskNum);
+        } catch (NumberFormatException e) {
+            throw new CommandException();
+        } catch (IndexOutOfBoundsException e) {
+            throw new IndexException();
         } catch (Exception e) {
-            ui.uiErrorMsg("Oh no! Invalid task number!");
-            return;
-        }
-        try {
-            Task task = taskList.getAtIndex(taskNum); // will remove later
-            taskList.unmarkTask(taskNum);
-            ui.uiUnmarkTask(task);
-        } catch (Exception e) {
-            ui.uiErrorMsg("Oh no! Task object does not exist at this index!");
+            System.out.println(e.getMessage());
+            throw new CommandException();
         }
     }
 
-    /*
-     * Function to delete task and print deleted task
-     * @param user input without command identifier, TaskList object from PrintBot
-     */
-    private static void botDelete(String restOfInput, TaskList taskList) {
+    private static Command botDelete(String restOfInput, TaskList taskList) throws CommandException, IndexException {
         Integer taskNum;
         try {
-            taskNum = Integer.parseInt(restOfInput.trim()) - 1; // 1-based to 0-based
+            taskNum = Integer.parseInt(restOfInput.trim()) - 1;
+            return new DeleteCommand(taskNum);
+        } catch (NumberFormatException e) {
+            throw new CommandException();
+        } catch (IndexOutOfBoundsException e) {
+            throw new IndexException();
         } catch (Exception e) {
-            ui.uiErrorMsg("Oh no! Invalid task number!");
-            return;
-        }
-        try {
-            Task task = taskList.getAtIndex(taskNum); // will remove later
-            taskList.deleteTask(taskNum);
-            ui.uiDeleteTask(task, taskList);
-        } catch (Exception e) {
-            ui.uiErrorMsg("Oh no! Task object does not exist at this index!");
+            System.out.println(e.getMessage());
+            throw new CommandException();
         }
     }
 
-    /*
-     * Function to add ToDo object and print add task message
-     * @param full user input, TaskList object from PrintBot
-     */
-    private static void botAddTodo(String input, TaskList taskList) {
+    private static Command botAddTodo(String input, TaskList taskList) throws CommandException, TaskNameEmptyException {
         Matcher m = PATTERN_TODO.matcher(input);
         if (!m.matches()) {
-            ui.uiErrorMsg("Oh no! Invalid format for todo task");
-            return; // replace this with exceptions
+            throw new CommandException();
         }
         String content = m.group(1).trim();
         if (content.isEmpty()) {
-            ui.uiErrorMsg("ToDo requires description");
-            return;
+            throw new TaskNameEmptyException();
         }
-        ToDo t = new ToDo(content);
-        taskList.addTask(t);
-        ui.uiAddTask(t, taskList);
+        ToDo task = new ToDo(content);
+        return new AddCommand(task);
     }
 
-    /*
-     * Function to add Deadline object and print add message
-     * @param full user input, TaskList object from PrintBot
-     */
-    private static void botAddDeadline(String input, TaskList taskList) {
+    private static Command botAddDeadline(String input, TaskList taskList) throws FormatDeadlineException, TaskNameEmptyException {
         Matcher m = PATTERN_DEADLINE.matcher(input);
         if (!m.matches()) {
-            ui.uiErrorMsg("Oh no! Invalid format for deadline task");
-            return;
+            throw new FormatDeadlineException();
         }
         String content = m.group(1).trim();
         String dueDate = m.group(2).trim();
-        if (content.isEmpty() || dueDate.isEmpty()) {
-            ui.uiErrorMsg("Deadline requires description and a /by date");
-            return;
+        if (content.isEmpty()) {
+            throw new TaskNameEmptyException();
+        } else if (dueDate.isEmpty()) {
+            throw new FormatDeadlineException();
         }
-        Deadline t = new Deadline(content, dueDate);
-        taskList.addTask(t);
-        ui.uiAddTask(t, taskList);
+        Deadline task = new Deadline(content, dueDate);
+        return new AddCommand(task);
     }
 
-    /*
-     * Function to add Event object and print add task message
-     * @param full user input, TaskList object from PrintBot
-     */
-    private static void botAddEvent(String input, TaskList taskList) {
+    private static Command botAddEvent(String input, TaskList taskList) throws FormatEventException, TaskNameEmptyException {
         Matcher m = PATTERN_EVENT.matcher(input);
         if (!m.matches()) {
-            ui.uiErrorMsg("Oh no! Invalid format for event task");
-            return;
+            throw new FormatEventException();
         }
         String content = m.group(1).trim();
         String startDate = m.group(2).trim();
         String endDate = m.group(3).trim();
-        if (content.isEmpty() || startDate.isEmpty() || endDate.isEmpty()) {
-            ui.uiErrorMsg("Event requires description, a /from date and a /to date");
-            return;
+        if (content.isEmpty()) {
+            throw new TaskNameEmptyException();
+        } else if (startDate.isEmpty() || endDate.isEmpty()) {
+            throw new FormatEventException();
         }
-        Event t = new Event(content, startDate, endDate);
-        taskList.addTask(t);
-        ui.uiAddTask(t, taskList);
-    }
-
-    private static void botFind(String input, TaskList taskList) {
-        Matcher m = PATTERN_FIND.matcher(input);
-        if (!m.matches()) {
-            ui.uiErrorMsg("Oh no! Invalid format for finding keyword");
-            return;
-        }
-        String keyword = m.group(1).trim();
-        String result = taskList.consolidateMatchList(keyword);
-        ui.uiFindTask(result);
-    }
-
-    private static void unknownCommand() {
-        ui.uiUnknownCmd();
+        Event task = new Event(content, startDate, endDate);
+        return new AddCommand(task);
     }
 
     // DATETIME
@@ -255,20 +208,12 @@ public class Parser {
      * @return localDateTime object as DateTime representation
      * @throws PrintException if string representation is not a valid input
      */
-    public static LocalDateTime parseDateTime(String input) throws PrintException {
+    public static LocalDateTime parseDateTime(String input) throws DateTimeInvalidException {
         try {
-            return LocalDateTime.parse(input, formatter);
+            LocalDateTime dateTime = LocalDateTime.parse(input, DATE_TIME_FORMATTER);
+            return dateTime;
         } catch (DateTimeParseException e) {
-            throw new PrintException("Invalid date time format. Use DD/MM/YYYY hhmm.");
+            throw new DateTimeInvalidException();
         }
     }
-
 }
-
-
-
-
-
-
-
-
