@@ -101,6 +101,42 @@ public class UI {
         return header + "\n" + matchView;
     }
 
+    /**
+     * Function to display help information with all available commands
+     * @return String help message with command instructions
+     */
+    public String uiShowHelp() {
+        StringBuilder help = new StringBuilder();
+        help.append("Here are all the available commands:\n\n");
+
+        help.append("Basic Commands:\n");
+        help.append("  greet           - Greet the bot\n");
+        help.append("  help            - Show this help message\n");
+        help.append("  list            - Show all tasks\n");
+        help.append("  bye             - Exit the application\n\n");
+
+        help.append("Task Management:\n");
+        help.append("  todo <description>                    - Add a todo task\n");
+        help.append("  deadline <description> /by <date>     - Add a deadline task\n");
+        help.append("  event <description> /from <date> /to <date> - Add an event task\n");
+        help.append("  mark <task_number>                    - Mark task as done\n");
+        help.append("  unmark <task_number>                  - Mark task as not done\n");
+        help.append("  delete <task_number>                  - Delete a task\n\n");
+
+        help.append("Search:\n");
+        help.append("  find <keyword>                        - Find tasks containing keyword\n\n");
+
+        help.append("Date Format: d/M/yyyy HHmm (e.g., 2/12/2019 1800)\n");
+        help.append("\nExamples:\n");
+        help.append("  todo read book\n");
+        help.append("  deadline return book /by 2/12/2019 1800\n");
+        help.append("  event project meeting /from 2/12/2019 1400 /to 2/12/2019 1600\n");
+        help.append("  mark 1\n");
+        help.append("  find book");
+
+        return help.toString();
+    }
+
     // ERRORS, INVALID COMMANDS
     /*
      * Function to wrap error message

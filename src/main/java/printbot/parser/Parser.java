@@ -12,6 +12,7 @@ import printbot.commands.DeleteCommand;
 import printbot.commands.ExitCommand;
 import printbot.commands.FindCommand;
 import printbot.commands.GreetCommand;
+import printbot.commands.HelpCommand;
 import printbot.commands.ListCommand;
 import printbot.commands.MarkCommand;
 import printbot.commands.UnknownCommand;
@@ -76,6 +77,8 @@ public class Parser {
             return botAddDeadline(input, taskList);
         case ("event"):
             return botAddEvent(input, taskList);
+        case ("help"):
+            return botHelp(restOfInput);
         default:
             return new UnknownCommand();
         }
@@ -198,6 +201,13 @@ public class Parser {
         }
         Event task = new Event(content, startDate, endDate);
         return new AddCommand(task);
+    }
+
+    private static Command botHelp(String restOfInputs) throws CommandException {
+        if (restOfInputs != null && !restOfInputs.trim().isEmpty()) {
+            throw new CommandException();
+        }
+        return new HelpCommand();
     }
 
     // DATETIME
