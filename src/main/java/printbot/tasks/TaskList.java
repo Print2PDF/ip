@@ -2,6 +2,8 @@ package printbot.tasks;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Class as container containing all stored Task objects
@@ -49,14 +51,9 @@ public class TaskList {
      * @return String representation of taskList
      */
     public String consolidateTaskList() {
-        StringBuilder output = new StringBuilder();
-
-        for (int i = 0; i < this.storage.size(); i++) {
-            Task currTask = this.storage.get(i);
-            output.append("\n").append(String.format("%d.", i + 1)).append(currTask.toString());
-        }
-
-        return output.toString();
+        return IntStream.range(0, this.storage.size())
+                .mapToObj(i -> String.format("%d. ", i + 1) + this.storage.get(i).toString())
+                .collect(Collectors.joining("\n"));
     }
 
     /**
@@ -65,17 +62,10 @@ public class TaskList {
      * @return String representation to all matching tasks
      */
     public String consolidateMatchList(String keyword) {
-        StringBuilder output = new StringBuilder();
-        int i = 0;
-
-        for (Task currTask : this.storage) {
-            if (currTask.hasKeyword(keyword)) {
-                i++;
-                output.append("\n").append(String.format("%d.", i)).append(currTask.toString());
-            }
-        }
-
-        return output.toString();
+        return this.storage.stream()
+                .filter(task -> task.hasKeyword(keyword))
+                .map(Task::toString)
+                .collect(Collectors.joining("\n"));
     }
 
     /*
@@ -86,11 +76,9 @@ public class TaskList {
      * return string of task list for save
      */
     public List<String> getSaveFormat() {
-        List<String> output = new ArrayList<>();
-        for (int i = 0; i < this.storage.size(); i++) {
-            output.add(this.storage.get(i).writeSave());
-        }
-        return output;
+        return this.storage.stream()
+                .map(Task::writeSave)
+                .collect(Collectors.toList());
     }
 
     /*
