@@ -11,6 +11,7 @@ public class ListCommand extends Command {
 
     @Override
     public String execute(TaskList taskList, UI ui, Storage storage) {
+        assert taskList != null : "Cannot consolidate a null task list";
         return ui.uiPrintTasks(taskList);
     }
 

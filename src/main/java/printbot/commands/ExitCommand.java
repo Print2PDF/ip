@@ -11,6 +11,8 @@ public class ExitCommand extends Command {
 
     @Override
     public String execute(TaskList taskList, UI ui, Storage storage) {
+        assert storage != null : "Cannot save to a null storage";
+        storage.writeSaveFile(taskList);
         return ui.uiByeUser();
     }
 

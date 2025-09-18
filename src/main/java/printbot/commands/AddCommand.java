@@ -11,7 +11,12 @@ import printbot.ui.UI;
 public class AddCommand extends Command {
     private final Task task;
 
+    /**
+     * Command to add task to task list
+     * @param task to add
+     */
     public AddCommand(Task task) {
+        assert task != null : "Cannot add null task";
         this.task = task;
     }
 
