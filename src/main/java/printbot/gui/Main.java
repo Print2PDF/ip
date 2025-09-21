@@ -26,6 +26,7 @@ public class Main extends Application {
             stage.setScene(scene);
             stage.setMinHeight(220);
             stage.setMinWidth(417);
+            stage.setTitle("PrintBot");
             fxmlLoader.<MainWindow>getController().setPrintBot(printBot);
             stage.show();
         } catch (IOException e) {

@@ -24,6 +24,7 @@ public class MarkCommand extends Command {
     public String execute(TaskList taskList, UI ui, Storage storage) {
         assert taskList != null : "Cannot mark a task in a null task list";
         taskList.markTask(this.index);
+        storage.writeSaveFile(taskList);
         Task task = taskList.getAtIndex(this.index);
         return ui.uiMarkTask(task);
     }

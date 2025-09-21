@@ -24,6 +24,7 @@ public class DeleteCommand extends Command {
     public String execute(TaskList taskList, UI ui, Storage storage) {
         assert taskList != null : "Cannot delete from a null task list";
         Task task = taskList.deleteTask(index);
+        storage.writeSaveFile(taskList);
         return ui.uiDeleteTask(task, taskList);
     }
 

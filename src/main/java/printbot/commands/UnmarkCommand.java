@@ -24,6 +24,7 @@ public class UnmarkCommand extends Command {
     public String execute(TaskList taskList, UI ui, Storage storage) {
         assert taskList != null : "Cannot unmark a task in a null task list";
         taskList.unmarkTask(this.index);
+        storage.writeSaveFile(taskList);
         Task task = taskList.getAtIndex(this.index);
         return ui.uiUnmarkTask(task);
     }
