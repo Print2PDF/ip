@@ -1,25 +1,36 @@
 .root {
-    main-color: rgb(237, 255, 242);       /* Create a looked-up color called "main-color" within root. */
+    main-color: #282828;
     -fx-background-color: main-color;
 }
 
 .text-field {
-    -fx-background-color: #d9ffe2;
-    -fx-font: 20px "Arial";
+    -fx-background-color: #282828;
+    -fx-text-fill: #76ff03;
+    -fx-font-family: "Monospaced";
+    -fx-border-color: #76ff03;
+    -fx-border-width: 1px;
 }
 
 .button {
-    -fx-background-color: mediumspringgreen;
-    -fx-font: italic bold 16px "Arial";
+    -fx-background-color: #282828;
+    -fx-text-fill: #76ff03;
+    -fx-font-family: "Monospaced";
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+    -fx-font-size: 16px;
+    -fx-border-color: #76ff03;
+    -fx-border-width: 1px;
 }
 
 .button:hover {
-    -fx-background-color:cyan;
+    -fx-background-color: #1c1c1c;
+    -fx-text-fill: #99ff33;
     -fx-font-size: 18px;
 }
 
 .button:pressed {
-    -fx-background-color:orange;
+    -fx-background-color: #76ff03;
+    -fx-text-fill: #282828;
     -fx-font-size: 20px;
 }
 
@@ -29,12 +40,12 @@
 }
 
 .scroll-bar {
-    -fx-font-size: 10px;  /* Change width of scroll bar. */
+    -fx-font-size: 10px;
     -fx-background-color: main-color;
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: #ff9cb4;
+    -fx-background-color: #76ff03;
     -fx-background-radius: 1em;
 }
 
