@@ -19,6 +19,7 @@ import printbot.commands.MarkCommand;
 import printbot.commands.UnknownCommand;
 import printbot.commands.UnmarkCommand;
 import printbot.exceptions.CommandException;
+import printbot.exceptions.DateTimeConflictException;
 import printbot.exceptions.DateTimeInvalidException;
 import printbot.exceptions.FormatDeadlineException;
 import printbot.exceptions.FormatEventException;
@@ -83,11 +84,6 @@ public class Parser {
             return new UnknownCommand();
         }
     }
-
-    /*
-     * All the helper methods have been refactored to check conditions and throw exceptions early.
-     * This "fail-fast" approach reduces nesting and improves readability.
-     */
 
     private static Command botList(String restOfInput) throws CommandException {
         if (!restOfInput.isEmpty()) {
@@ -167,7 +163,7 @@ public class Parser {
     }
 
     private static Command botAddEvent(String input, TaskList taskList) throws FormatEventException,
-            TaskNameEmptyException, DateTimeInvalidException {
+            TaskNameEmptyException, DateTimeInvalidException, DateTimeConflictException {
         Matcher m = PATTERN_EVENT.matcher(input);
         if (!m.matches()) {
             throw new FormatEventException();

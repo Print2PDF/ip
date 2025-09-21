@@ -14,7 +14,7 @@ public class UI {
     public UI() {}
 
     /*
-     * Function to wrap and standardise appearance of all messages
+     * Function to wrap and standardise appearance of all messages, used in ui for PrintBot v0.1
      * @param message
      * @return standardise message in console
      */
@@ -24,15 +24,19 @@ public class UI {
         System.out.println(LINE);
     }
 
-    /*
-     * Function to return greeting/introduction message
+    // The below functions will return void for v0.1, and String for v0.2 and later
+
+    /**
+     * Function to print greeting to user
+     * @return String greeting message
      */
     public String uiGreetUser() {
         return String.format("Hello! I'm %s.\nWhat can I do for you?", BOT_NAME);
     }
 
-    /*
-     * Function to return exit message
+    /**
+     * Function to print exit message to user
+     * @return String exit message
      */
     public String uiByeUser() {
         return "Bye. Hope to see you again soon!\n";
@@ -126,11 +130,11 @@ public class UI {
         help.append("Search:\n");
         help.append("  find <keyword>                        - Find tasks containing keyword\n\n");
 
-        help.append("Date Format: dd/MM/yyyy HH:mm (e.g., 2/12/2019 1800)\n");
+        help.append("Date Format: dd/MM/yyyy HH:mm (e.g., 02/12/2019 18:00)\n");
         help.append("\nExamples:\n");
         help.append("  todo read book\n");
-        help.append("  deadline return book /by 2/12/2019 1800\n");
-        help.append("  event project meeting /from 2/12/2019 1400 /to 2/12/2019 1600\n");
+        help.append("  deadline return book /by 02/12/2019 18:00\n");
+        help.append("  event project meeting /from 02/12/2019 14:00 /to 02/12/2019 16:00\n");
         help.append("  mark 1\n");
         help.append("  find book");
 

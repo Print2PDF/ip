@@ -54,8 +54,7 @@ application {
 }
 
 shadowJar {
-    archiveFileName = 'printbot'
-    archiveClassifier = null;
+    archiveFileName = 'PrintBot.jar'
 }
 
 run{

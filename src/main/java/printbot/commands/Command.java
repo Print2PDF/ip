@@ -12,6 +12,6 @@ public abstract class Command {
 
     public abstract String execute(TaskList taskList, UI ui, Storage storage);
 
-    public abstract boolean isExit();
+    public abstract boolean isExit(); // used for non-gui run loop
 
 }

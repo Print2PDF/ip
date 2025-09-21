@@ -2,9 +2,7 @@ package printbot.tasks;
 
 // NEW
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import printbot.exceptions.DateTimeInvalidException;
 import printbot.parser.Parser;
@@ -17,7 +15,7 @@ public class Deadline extends Task {
     private LocalDateTime dueDate;
 
     /**
-     * Default constructor parses content and datetime
+     * Default constructor parses content and datetime, used in PrintBot v0.1
      * @param content as full user input
      */
     public Deadline(String content) throws DateTimeInvalidException {

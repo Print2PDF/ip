@@ -2,6 +2,7 @@ package printbot.tasks;
 
 import java.time.LocalDateTime;
 
+import printbot.exceptions.DateTimeConflictException;
 import printbot.exceptions.DateTimeInvalidException;
 import printbot.parser.Parser;
 
@@ -13,7 +14,7 @@ public class Event extends Task {
     private LocalDateTime end;
 
     /**
-     * Default constructor parses content and datetime
+     * Default constructor parses content and datetime, used in PrintBot v0.1
      * @param content as full user input
      */
     public Event(String content) throws DateTimeInvalidException {
@@ -30,10 +31,17 @@ public class Event extends Task {
      * @param from as start date of task
      * @param to as end date of task
      */
-    public Event(String content, String from, String to) throws DateTimeInvalidException {
+    public Event(String content, String from, String to) throws DateTimeInvalidException, DateTimeConflictException {
         super(content);
         this.start = Parser.parseDateTime(from);
         this.end = Parser.parseDateTime(to);
+        if (!validDateTime(start, end)) {
+            throw new DateTimeConflictException();
+        }
+    }
+
+    private static boolean validDateTime(LocalDateTime start, LocalDateTime end) {
+        return !start.isAfter(end);
     }
 
     @Override

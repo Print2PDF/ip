@@ -19,7 +19,7 @@
 ## Installation
 
 1.  Download it from [here](https://github.com/Print2PDF/ip/releases).
-2.  Double-click the lastest PrintBot.jar file.
+2.  Double-click the latest PrintBot.jar file.
 3.  Add your tasks using simple commands.
 4.  Let it manage your tasks for you 😊
 
