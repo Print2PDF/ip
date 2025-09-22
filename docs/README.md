@@ -131,6 +131,7 @@ ____________________________________________________________
 PrintBot v0.2 and later uses JavaFX for a better, interactive application
 
 <img width="503" height="785" alt="Screenshot 2025-09-19 120147" src="https://github.com/user-attachments/assets/cea65673-94da-4123-b805-eae7824d8775" />
+<img width="953" height="787" alt="Ui" src="https://github.com/user-attachments/assets/e12a5c0b-8fb6-467a-9203-f5b1a3b7ff43" />
 
 ## Technical Architecture
 
