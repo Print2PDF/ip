@@ -110,31 +110,40 @@ public class Parser {
         try {
             return Integer.parseInt(input.trim()) - 1;
         } catch (NumberFormatException e) {
-            throw new CommandException();
-        } catch (IndexOutOfBoundsException e) {
             throw new IndexException();
+        } catch (Exception e) {
+            throw new CommandException();
         }
+    }
+
+    private static void validateTaskNumber(int index, TaskList taskList) throws IndexException {
+        if (index >= taskList.getSize()) {
+            throw new IndexException();
+        } // else nothing
     }
 
     private static Command botMark(String restOfInput, TaskList taskList) throws CommandException, IndexException {
         int taskNum = parseTaskNumber(restOfInput);
+        validateTaskNumber(taskNum, taskList);
         return new MarkCommand(taskNum);
     }
 
     private static Command botUnmark(String restOfInput, TaskList taskList) throws CommandException, IndexException {
         int taskNum = parseTaskNumber(restOfInput);
+        validateTaskNumber(taskNum, taskList);
         return new UnmarkCommand(taskNum);
     }
 
     private static Command botDelete(String restOfInput, TaskList taskList) throws CommandException, IndexException {
         int taskNum = parseTaskNumber(restOfInput);
+        validateTaskNumber(taskNum, taskList);
         return new DeleteCommand(taskNum);
     }
 
-    private static Command botAddTodo(String input, TaskList taskList) throws CommandException, TaskNameEmptyException {
+    private static Command botAddTodo(String input, TaskList taskList) throws TaskNameEmptyException {
         Matcher m = PATTERN_TODO.matcher(input);
         if (!m.matches()) {
-            throw new CommandException();
+            throw new TaskNameEmptyException();
         }
         String content = m.group(1).trim();
         if (content.isEmpty()) {

@@ -1,6 +1,7 @@
 package printbot.tasks;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import printbot.exceptions.DateTimeConflictException;
 import printbot.exceptions.DateTimeInvalidException;
@@ -52,12 +53,10 @@ public class Event extends Task {
 
     @Override
     public String writeSave() {
-        String startDate = String.format("%02d", this.start.getDayOfMonth()) + "/" + this.start.getMonthValue()
-                + "/" + this.start.getYear() + " " + this.start.getHour() + ":" + this.start.getMinute();
-        String endDate = String.format("%02d", this.end.getDayOfMonth()) + "/" + this.end.getMonthValue()
-                + "/" + this.end.getYear() + " " + this.end.getHour() + ":" + this.end.getMinute();
-        return "D | " + (this.isItMarked() ? "1" : "0") + " | " + this.getContent()
-                + " | " + startDate + " | " + endDate;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String startDate = this.start.format(formatter);
+        String endDate = this.end.format(formatter);
+        return "E|" + (this.isItMarked() ? "1" : "0") + "|" + this.getContent()
+                + "|" + startDate + "|" + endDate;
     }
-
 }

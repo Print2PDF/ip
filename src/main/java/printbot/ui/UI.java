@@ -111,33 +111,27 @@ public class UI {
      */
     public String uiShowHelp() {
         StringBuilder help = new StringBuilder();
-        help.append("Here are all the available commands:\n\n");
-
-        help.append("Basic Commands:\n");
-        help.append("  greet           - Greet the bot\n");
-        help.append("  help            - Show this help message\n");
-        help.append("  list            - Show all tasks\n");
-        help.append("  bye             - Exit the application\n\n");
-
-        help.append("Task Management:\n");
-        help.append("  todo <description>                    - Add a todo task\n");
-        help.append("  deadline <description> /by <date>     - Add a deadline task\n");
-        help.append("  event <description> /from <date> /to <date> - Add an event task\n");
-        help.append("  mark <task_number>                    - Mark task as done\n");
-        help.append("  unmark <task_number>                  - Mark task as not done\n");
-        help.append("  delete <task_number>                  - Delete a task\n\n");
-
-        help.append("Search:\n");
-        help.append("  find <keyword>                        - Find tasks containing keyword\n\n");
-
-        help.append("Date Format: dd/MM/yyyy HH:mm (e.g., 02/12/2019 18:00)\n");
-        help.append("\nExamples:\n");
-        help.append("  todo read book\n");
-        help.append("  deadline return book /by 02/12/2019 18:00\n");
-        help.append("  event project meeting /from 02/12/2019 14:00 /to 02/12/2019 16:00\n");
-        help.append("  mark 1\n");
-        help.append("  find book");
-
+        help.append("Available commands:\n\n");
+        help.append("INPUT    | PURPOSE\n\n");
+        help.append("BASIC:\n");
+        help.append("greet    | greet PrintBot\n");
+        help.append("bye      | exit PrintBot\n\n");
+        help.append("TASK MANAGEMENT:\n");
+        help.append("todo     | add todo task\n");
+        help.append("deadline | add deadline task\n");
+        help.append("event    | add event task\n");
+        help.append("mark     | mark a task\n");
+        help.append("unmark   | unmark a task\n\n");
+        help.append("VIEW TASKS:\n");
+        help.append("list     | view all tasks\n");
+        help.append("find     | find task by keyword\n\n");
+        help.append("FORMATS:\n");
+        help.append("todo <content>\n");
+        help.append("deadline <content> /by <date>\n");
+        help.append("event <content> /from <date /to <date>\n");
+        help.append("mark <task_number>\n");
+        help.append("unmark <task_number>\n\n");
+        help.append("To see this message again: help");
         return help.toString();
     }
 

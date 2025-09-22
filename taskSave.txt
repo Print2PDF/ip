@@ -1,1 +1,3 @@
+T|0|borrow book
 T|0|read book
+D|0|return book|25/09/2025 23:59

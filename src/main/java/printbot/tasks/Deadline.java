@@ -3,6 +3,7 @@ package printbot.tasks;
 // NEW
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import printbot.exceptions.DateTimeInvalidException;
 import printbot.parser.Parser;
@@ -42,9 +43,8 @@ public class Deadline extends Task {
 
     @Override
     public String writeSave() {
-        String date = String.format("%02d", this.dueDate.getDayOfMonth()) + "/" + this.dueDate.getMonthValue()
-                + "/" + this.dueDate.getYear() + " " + this.dueDate.getHour() + ":" + this.dueDate.getMinute();
-        return "D | " + (this.isItMarked() ? "1" : "0") + " | " + this.getContent() + " | " + date;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String formattedDateTime = this.dueDate.format(formatter);
+        return "D|" + (this.isItMarked() ? "1" : "0") + "|" + this.getContent() + "|" + formattedDateTime;
     }
-
 }

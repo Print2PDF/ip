@@ -11,42 +11,39 @@ public class Task {
     private final String content;
 
     /**
-     * Constructor
-     * Store content (description)
-     * Start as unmarked (false)
+     * Constructor for Task object
+     * @param content task description
      */
     public Task(String content) {
         this.isMarked = false;
         this.content = content;
     }
 
-    /*
-     * Getter
-     * Return stored content
+    /**
+     * Function to get task description
+     * @return String task description
      */
     public String getContent() {
         return this.content;
     }
 
-    /*
-     * Getter
-     * Return mark status
+    /**
+     * Function to check if task is marked, used in writing saves
+     * @return boolean, true if mark as done, false if mark as not done
      */
     public boolean isItMarked() {
         return this.isMarked;
     }
 
-    /*
-     * Setter
-     * Mark task as done (true)
+    /**
+     * Function to mark task as done
      */
     public void mark() {
         this.isMarked = true;
     }
 
-    /*
-     * Setter
-     * Unmark task as done (false)
+    /**
+     * Function to mark task as not done
      */
     public void unmark() {
         this.isMarked = false;
@@ -61,19 +58,18 @@ public class Task {
         // example: "[X] return book"
     }
 
-    /*
-     * @parameters
-     * none
-     *
-     * @description
-     * return string of task for save
+    /**
+     * Function to write task to save format String
+     * @return String save format of task
      */
     public String writeSave() {
         return "task"; // stub
     }
 
     /**
-     * Function to translate save format to Task object
+     * Function to translate save format String to new Task object
+     * @param data save format String
+     * @return Task new task object
      */
     public static Task readSave(String data) throws CorruptedSaveException {
         String[] parts = data.split("\\|");

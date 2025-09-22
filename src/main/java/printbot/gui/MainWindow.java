@@ -6,6 +6,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import printbot.PrintBot;
 
 /**
@@ -58,5 +59,10 @@ public class MainWindow {
                 DialogBox.getPrintBotDialog(response, botImage));
 
         userInput.clear();
+
+        if (printBot.isExit(input)) {
+            Stage stage = (Stage) dialogContainer.getScene().getWindow();
+            stage.close();
+        }
     }
 }

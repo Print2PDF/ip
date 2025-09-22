@@ -50,4 +50,18 @@ public class PrintBot {
             return e.getMessage();
         }
     }
+
+    /**
+     * Function to check if user input is an exit command
+     * @param input as user input
+     * @return boolean true if input is "bye", false otherwise
+     */
+    public boolean isExit(String input) {
+        try {
+            Command command = Parser.parseInput(input, this.taskList);
+            return command.isExit();
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
